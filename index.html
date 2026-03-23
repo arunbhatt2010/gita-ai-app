@@ -44,13 +44,12 @@ button {
   text-align: left;
 }
 </style>
-
 </head>
 
 <body>
 
 <div class="container">
-  <h1>🕉️ Gita AI</h1>
+  <h1>🕉 Gita AI</h1>
   <p>Get clarity in 30 seconds from Gita wisdom</p>
 
   <div id="chat"></div>
@@ -78,8 +77,7 @@ async function sendMessage() {
   chat.appendChild(botDiv);
 
   try {
-
-    const res = await fetch("https://gita-ai-backend-7261xxptt-arun-prakash-bhatt-s-projects.vercel.app/api/ask", {
+    const res = await fetch("https://gita-ai-backend-r0nen651b-arun-prakash-bhatt-s-projects.vercel.app/api/ask", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -93,13 +91,14 @@ async function sendMessage() {
 
     botDiv.innerHTML = `
       <div>
-      <b>Krishna Guide:</b><br><br>
-      ${data.reply ? data.reply.replace(/\\n/g, "<br>") : "No response"}
+      <b>Krishna:</b><br><br>
+      ${data.reply ? data.reply.replace(/\n/g, "<br>") : "No response"}
       </div>
     `;
 
   } catch (err) {
-    botDiv.innerText = "Error: " + err.message;
+    botDiv.innerText = "Error connecting...";
+    console.error(err);
   }
 }
 </script>
