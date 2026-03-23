@@ -84,3 +84,29 @@
         const data = await res.json();
 
         botDiv.innerHTML = `<b>Krishna:</b><br><br>${data.reply || "No response"}`;
+<script>
+async function askAI() {
+  alert("Button clicked");
+
+  const input = document.querySelector("textarea").value;
+
+  try {
+    const res = await fetch("https://gita-ai-backend-2wek8earq-arun-prakash-bhatt-s-projects.vercel.app/api/ask", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message: input })
+    });
+
+    const data = await res.json();
+
+    alert("Response आया");
+
+    document.querySelector("#output").innerText = data.reply;
+
+  } catch (err) {
+    alert("Error: " + err.message);
+  }
+}
+</script>
