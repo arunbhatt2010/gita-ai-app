@@ -54,59 +54,66 @@
   <button onclick="sendMessage()">Get Clarity →</button>
 
   <script>
-    async function sendMessage() {
-      const inputBox = document.getElementById("input");
-      const chat = document.getElementById("chat");
+    // 🧠 Memory
+let conversationHistory = [];
 
-      const text = inputBox.value.trim();
-      if (!text) return;
+// 🚀 MAIN FUNCTION
+async function sendMessage() {
 
-      // User message
-      chat.innerHTML += `<div><b>You:</b> ${text}</div>`;
-      inputBox.value = "";
+  const inputBox = document.getElementById("input");
+  const chat = document.getElementById("chat");
 
-      // Thinking...
-      const botDiv = document.createElement("div");
-      botDiv.innerText = "Thinking...";
-      chat.appendChild(botDiv);
+  const text = inputBox.value.trim();
+  if (!text) return;
 
-      try {
-        const res = await fetch("https://gita-ai-backend-dzeqpc5fs-arun-prakash-bhatt-s-projects.vercel.app/api/ask", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            message: text
-          })
-        });
+  // 👤 User message
+  chat.innerHTML += `<div><b>You:</b> ${text}</div>`;
+  inputBox.value = "";
 
-        const data = await res.json();
-
-        botDiv.innerHTML = `<b>Krishna:</b><br><br>${data.reply || "No response"}`;
-<script>
-async function askAI() {
-  alert("Button clicked");
-
-  const input = document.querySelector("textarea").value;
+  // 🤖 Thinking UI
+  const botDiv = document.createElement("div");
+  botDiv.innerText = "Thinking...";
+  chat.appendChild(botDiv);
 
   try {
-    const res = await fetch("https://gita-ai-backend-2wek8earq-arun-prakash-bhatt-s-projects.vercel.app/api/ask", {
+
+    const res = await fetch("https://gita-ai-backend-zeta.vercel.app/api/ask", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ message: input })
+      body: JSON.stringify({
+        message: text,
+        history: conversationHistory
+      })
     });
 
     const data = await res.json();
+    const answer = data.reply;
 
-    alert("Response आया");
+    // 🧠 Memory update
+    conversationHistory.push(
+      { role: "user", content: text },
+      { role: "assistant", content: answer }
+    );
 
-    document.querySelector("#output").innerText = data.reply;
+    // 🧠 Show response
+    botDiv.innerHTML = `
+    <div>
+    <b>Gita Guidance:</b><br><br>
+    ${answer.replace(/\n/g, "<br>")}
+    </div>`;
 
   } catch (err) {
-    alert("Error: " + err.message);
+    botDiv.innerText = "Error: " + err.message;
   }
 }
+
+// ⌨️ Enter key support
+document.getElementById("input").addEventListener("keypress", function(e) {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
 </script>
